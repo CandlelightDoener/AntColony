@@ -6,10 +6,19 @@ public class Ant {
 	private Location pileLocation;
 	private Location location;
 
+	public Ant() {
+		this.tripAdvisor = new TripAdvisor();
+	}
+	
 	public Ant(TripAdvisor tripAdvisor) {
 		this.tripAdvisor = tripAdvisor;
 	}
 
+	public Ant(Location location) {
+		this.location = location;
+		this.tripAdvisor = new TripAdvisor();
+	}
+	
 	public void move() {
 		if(pileLocation != null)
 			location = tripAdvisor.goTowards(pileLocation);

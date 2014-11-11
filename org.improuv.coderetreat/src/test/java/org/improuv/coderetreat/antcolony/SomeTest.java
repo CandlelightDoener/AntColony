@@ -64,23 +64,17 @@ public class SomeTest {
 		TripAdvisor tripAdvisor = mock(TripAdvisor.class);
 		Ant ant = new Ant(tripAdvisor);
 		
-		BreadcrumbPile pile = new BreadcrumbPile(random());
+		BreadcrumbPile pile = new BreadcrumbPile(randomLocation());
 		ant.setBreadcrumbPile(pile);
 		ant.move();
 		verify(tripAdvisor).goTowards(pile.getLocation());
 	}
 
-	private Location random() {
-		return Location.randomLocation(rand);
-	}
-	
 	@Test
 	public void anAntCanReachANeighbouringPile_inOneMove() throws Exception {
-		Ant ant = new Ant(new TripAdvisor());
+		Ant ant = new Ant(randomLocation());
 		
-		ant.setLocation(random());
-		
-		BreadcrumbPile pile = new BreadcrumbPile(random());
+		BreadcrumbPile pile = new BreadcrumbPile(randomLocation());
 		ant.setBreadcrumbPile(pile);
 
 		ant.move();
@@ -106,4 +100,9 @@ public class SomeTest {
 	public void anAnt_withADistantPile_isAtSomeIntermediateLocation_afterMoving() throws Exception {
 		
 	}
+
+	private Location randomLocation() {
+		return Location.randomLocation(rand);
+	}
+	
 }
