@@ -4,6 +4,7 @@ public class Ant {
 
 	private TripAdvisor tripAdvisor;
 	private Location pileLocation;
+	private Location location;
 
 	public Ant(TripAdvisor tripAdvisor) {
 		this.tripAdvisor = tripAdvisor;
@@ -11,13 +12,13 @@ public class Ant {
 
 	public void move() {
 		if(pileLocation != null)
-			tripAdvisor.goTowards(pileLocation);
+			location = tripAdvisor.goTowards(pileLocation);
 		else
-			tripAdvisor.randomWalk();
+			location = tripAdvisor.randomWalk();
 	}
 
 	public Location getLocation() {
-		return new Location();
+		return location;
 	}
 
 	public void setBreadcrumbPile(BreadcrumbPile pile) {
@@ -25,8 +26,7 @@ public class Ant {
 	}
 
 	public void setLocation(Location antLocation) {
-		// TODO Auto-generated method stub
-		
+		this.location = antLocation;
 	}
 
 }

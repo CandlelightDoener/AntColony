@@ -1,13 +1,15 @@
 package org.improuv.coderetreat.antcolony;
 
+import java.util.Random;
+
 public class TripAdvisor {
 
-	public void randomWalk() {
+	public Location randomWalk() {
+		return Location.randomLocation(new Random());
 	}
 
-	public void goTowards(Location location) {
-		// TODO Auto-generated method stub
-		
+	public Location goTowards(Location location) {
+		return location;
 	}
 
 }
