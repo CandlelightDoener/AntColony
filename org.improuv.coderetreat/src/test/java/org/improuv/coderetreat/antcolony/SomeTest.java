@@ -60,8 +60,27 @@ public class SomeTest {
 		TripAdvisor tripAdvisor = mock(TripAdvisor.class);
 		Ant ant = new Ant(tripAdvisor);
 		BreadcrumbPile pile = new BreadcrumbPile();
+		pile.setLocation(new Location());
 		ant.setBreadcrumbPile(pile);
 		ant.move();
 		verify(tripAdvisor).goTowards(pile.getLocation());
+	}
+	
+	@Test
+	public void anAntCanReachANeighbouringPile_inOneMove() throws Exception {
+		TripAdvisor tripAdvisor = new TripAdvisor();
+		Ant ant = new Ant(tripAdvisor);
+		
+		Location antLocation = new Location();
+		ant.setLocation(antLocation);
+		
+		BreadcrumbPile pile = new BreadcrumbPile();
+		Location pileLocation = new Location();
+		pile.setLocation(pileLocation);
+		ant.setBreadcrumbPile(pile);
+
+		ant.move();
+		assertThat(ant.getLocation(), is(pile.getLocation()));
+		
 	}
 }
