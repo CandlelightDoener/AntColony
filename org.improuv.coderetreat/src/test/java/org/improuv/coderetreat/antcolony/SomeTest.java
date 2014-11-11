@@ -38,11 +38,30 @@ public class SomeTest {
 	
 	@Test
 	public void whenAnAntMoves_itChangesLocation() throws Exception {
-		Ant ant = new Ant();
+		Ant ant = new Ant(mock(TripAdvisor.class));
+		
 		Location before = ant.getLocation();
 		ant.move();
 		Location after = ant.getLocation();
 		
 		assertThat(before, is(not(after)));
+	}
+	
+	@Test
+	public void aAntWithoutGoal_randomWalks() throws Exception {
+		TripAdvisor tripAdvisor = mock(TripAdvisor.class);
+		Ant ant = new Ant(tripAdvisor);
+		ant.move();
+		verify(tripAdvisor).randomWalk();
+	}
+	
+	@Test
+	public void anAntWhoKnowsAPile_goesThere() throws Exception {
+		TripAdvisor tripAdvisor = mock(TripAdvisor.class);
+		Ant ant = new Ant(tripAdvisor);
+		BreadcrumbPile pile = new BreadcrumbPile();
+		ant.setBreadcrumbPile(pile);
+		ant.move();
+		verify(tripAdvisor).goTowards(pile.getLocation());
 	}
 }
