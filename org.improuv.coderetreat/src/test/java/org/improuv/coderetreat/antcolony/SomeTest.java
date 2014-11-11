@@ -8,14 +8,14 @@ import org.junit.Test;
 public class SomeTest {
 
 	@Test
-	public void emptyWorldHasNoBreadcrumbs() throws Exception {
-		World world = World.init();
-		assertFalse(world.hasBreadcrumbs());
+	public void emptyWorldHasNoBreadcrumbPiles() throws Exception {
+		World world = World.empty();
+		assertFalse(world.hasBreadcrumbPiles());
 	}
 	
 	@Test
 	public void initializedWorldHasAtLeastOnePileOfBreadcrumbs() {
 		World world = World.init();
-		assertTrue(world.hasBreadcrumbs());
+		assertTrue(world.hasBreadcrumbPiles());
 	}
 }
