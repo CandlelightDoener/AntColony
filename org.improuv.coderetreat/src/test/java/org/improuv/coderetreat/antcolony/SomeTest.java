@@ -63,8 +63,8 @@ public class SomeTest {
 	public void anAntWhoKnowsAPile_goesThere() throws Exception {
 		TripAdvisor tripAdvisor = mock(TripAdvisor.class);
 		Ant ant = new Ant(tripAdvisor);
-		BreadcrumbPile pile = new BreadcrumbPile();
-		pile.setLocation(random());
+		
+		BreadcrumbPile pile = new BreadcrumbPile(random());
 		ant.setBreadcrumbPile(pile);
 		ant.move();
 		verify(tripAdvisor).goTowards(pile.getLocation());
@@ -76,15 +76,11 @@ public class SomeTest {
 	
 	@Test
 	public void anAntCanReachANeighbouringPile_inOneMove() throws Exception {
-		TripAdvisor tripAdvisor = new TripAdvisor();
-		Ant ant = new Ant(tripAdvisor);
+		Ant ant = new Ant(new TripAdvisor());
 		
-		Location antLocation = random();
-		ant.setLocation(antLocation);
+		ant.setLocation(random());
 		
-		BreadcrumbPile pile = new BreadcrumbPile();
-		Location pileLocation = random();
-		pile.setLocation(pileLocation);
+		BreadcrumbPile pile = new BreadcrumbPile(random());
 		ant.setBreadcrumbPile(pile);
 
 		ant.move();
@@ -106,7 +102,6 @@ public class SomeTest {
 		assertFalse(center.isAdjacentTo(new Location(1,3)));
 	}
 	
-	@Ignore("we're not here yet since we don't know what distinct means")
 	@Test
 	public void anAnt_withADistantPile_isAtSomeIntermediateLocation_afterMoving() throws Exception {
 		

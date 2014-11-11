@@ -2,14 +2,14 @@ package org.improuv.coderetreat.antcolony;
 
 public class BreadcrumbPile {
 
-	private Location pileLocation;
+	private Location location;
 
 	public Location getLocation() {
-		return pileLocation;
+		return location;
 	}
 
-	public void setLocation(Location pileLocation) {
-		this.pileLocation = pileLocation;
+	public BreadcrumbPile(Location location) {
+		this.location = location;
 		
 	}
 
