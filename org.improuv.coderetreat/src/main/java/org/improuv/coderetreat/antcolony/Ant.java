@@ -18,10 +18,15 @@ public class Ant {
 		this.location = location;
 		this.tripAdvisor = new TripAdvisor();
 	}
+
+	public Ant(TripAdvisor advisor, Location location) {
+		this.location = location;
+		this.tripAdvisor = advisor;
+	}
 	
 	public void move() {
 		if(pileLocation != null)
-			location = tripAdvisor.goTowards(pileLocation);
+			location = tripAdvisor.goFromTo(location,pileLocation);
 		else
 			location = tripAdvisor.randomWalk();
 	}

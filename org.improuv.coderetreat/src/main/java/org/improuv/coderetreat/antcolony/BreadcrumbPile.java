@@ -10,7 +10,6 @@ public class BreadcrumbPile {
 
 	public BreadcrumbPile(Location location) {
 		this.location = location;
-		
 	}
 
 }

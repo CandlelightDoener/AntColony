@@ -8,8 +8,9 @@ public class TripAdvisor {
 		return Location.randomLocation(new Random());
 	}
 
-	public Location goTowards(Location location) {
-		return location;
+	public Location goFromTo(Location from, Location to) {
+		if(from.isAdjacentTo(to))
+			return to;
+		return Location.randomLocation(new Random());
 	}
-
 }

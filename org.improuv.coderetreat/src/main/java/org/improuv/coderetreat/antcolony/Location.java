@@ -4,11 +4,19 @@ import java.util.Random;
 
 public class Location {
 	
-	private int x;
-	private int y;
+	private final int x;
+	private final int y;
 	
 	public static Location randomLocation(Random rand) {
 		return new Location(rand.nextInt(), rand.nextInt());
+	}
+
+	public static Location farAwayFrom(Location other) {
+		return new Location(other.x + 5, other.y + 5);
+	}
+	
+	public static Location closeTo(Location other) {
+		return new Location(other.x, other.y + 1);
 	}
 
 	public Location(int x, int y) {

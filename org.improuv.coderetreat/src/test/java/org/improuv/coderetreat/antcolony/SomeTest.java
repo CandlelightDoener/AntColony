@@ -64,17 +64,19 @@ public class SomeTest {
 		TripAdvisor tripAdvisor = mock(TripAdvisor.class);
 		Ant ant = new Ant(tripAdvisor);
 		
+		Location initialAntLocation = ant.getLocation();
+		
 		BreadcrumbPile pile = new BreadcrumbPile(randomLocation());
 		ant.setBreadcrumbPile(pile);
 		ant.move();
-		verify(tripAdvisor).goTowards(pile.getLocation());
+		verify(tripAdvisor).goFromTo(initialAntLocation, pile.getLocation());
 	}
 
 	@Test
 	public void anAntCanReachANeighbouringPile_inOneMove() throws Exception {
 		Ant ant = new Ant(randomLocation());
 		
-		BreadcrumbPile pile = new BreadcrumbPile(randomLocation());
+		BreadcrumbPile pile = new BreadcrumbPile(Location.closeTo(ant.getLocation()));
 		ant.setBreadcrumbPile(pile);
 
 		ant.move();
@@ -98,7 +100,17 @@ public class SomeTest {
 	
 	@Test
 	public void anAnt_withADistantPile_isAtSomeIntermediateLocation_afterMoving() throws Exception {
+		Location initialAntLocation = randomLocation();
+		Location pileLocation = Location.farAwayFrom(randomLocation());
 		
+		Ant ant = new Ant(initialAntLocation);
+		BreadcrumbPile pile = new BreadcrumbPile(pileLocation);
+		ant.setBreadcrumbPile(pile);
+		
+		ant.move();
+		
+		assertThat(ant.getLocation(), is(not(initialAntLocation)));
+		assertThat(ant.getLocation(), is(not(pileLocation)));
 	}
 
 	private Location randomLocation() {
