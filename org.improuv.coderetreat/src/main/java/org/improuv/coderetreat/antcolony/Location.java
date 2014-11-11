@@ -2,6 +2,9 @@ package org.improuv.coderetreat.antcolony;
 
 import java.util.Random;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 public class Location {
 	
 	private final int x;
@@ -29,4 +32,50 @@ public class Location {
 			return true;
 		return false;
 	}
+	
+	//TODO: this is basically some movement-strategy and doesn't belong here. I put it here because I didn't want to expose the x+y of the Location.
+	public Location towards(Location other) {
+		if(x < other.x) {
+			return new Location(x+1, y);
+		} else if(x > other.x) {
+			return new Location(x-1, y);
+		} else if(y < other.y) {
+			return new Location(x, y+1);
+		} else if(y > other.y) {
+			return new Location(x, y-1);
+		} else {
+			return new Location(x, y);
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Location other = (Location) obj;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		return true;
+	}
+
+	public String toString() {
+		return x+","+y;
+	}
+	
+	
 }

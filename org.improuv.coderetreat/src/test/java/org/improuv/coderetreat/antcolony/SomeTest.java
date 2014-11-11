@@ -40,6 +40,7 @@ public class SomeTest {
 		verify(ant).move();
 	}
 	
+	
 	@Test
 	public void whenAnAntMoves_itChangesLocation() throws Exception {
 		Ant ant = new Ant(new TripAdvisor());
@@ -69,7 +70,7 @@ public class SomeTest {
 		BreadcrumbPile pile = new BreadcrumbPile(randomLocation());
 		ant.setBreadcrumbPile(pile);
 		ant.move();
-		verify(tripAdvisor).goFromTo(initialAntLocation, pile.getLocation());
+		verify(tripAdvisor).proceed(initialAntLocation, pile.getLocation());
 	}
 
 	@Test
@@ -111,6 +112,39 @@ public class SomeTest {
 		
 		assertThat(ant.getLocation(), is(not(initialAntLocation)));
 		assertThat(ant.getLocation(), is(not(pileLocation)));
+	}
+	
+	@Test
+	public void tripAdvisorGoesHorizontalFirst() throws Exception {
+		Location start = new Location(0,0);
+		Location end = new Location(3,3);
+		
+		TripAdvisor maps = new TripAdvisor();
+		Location intermediate = maps.proceed(start, end);
+		
+		assertThat(intermediate, is(new Location(1,0)));
+	}
+
+	@Test
+	public void tripAdvisorGoesVerticalWhenXValuesAreEqual() throws Exception {
+		Location start = new Location(0,0);
+		Location end = new Location(0,3);
+		
+		TripAdvisor maps = new TripAdvisor();
+		Location intermediate = maps.proceed(start, end);
+		
+		assertThat(intermediate, is(new Location(0,1)));
+	}
+	
+	@Test
+	public void tripAdvisorStaysAtLocationWhenReached() throws Exception {
+		Location start = new Location(0,0);
+		Location end = new Location(0,0);
+		
+		TripAdvisor maps = new TripAdvisor();
+		Location intermediate = maps.proceed(start, end);
+		
+		assertThat(intermediate, is(new Location(0,0)));
 	}
 
 	private Location randomLocation() {

@@ -26,7 +26,7 @@ public class Ant {
 	
 	public void move() {
 		if(pileLocation != null)
-			location = tripAdvisor.goFromTo(location,pileLocation);
+			location = tripAdvisor.proceed(location,pileLocation);
 		else
 			location = tripAdvisor.randomWalk();
 	}
