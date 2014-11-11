@@ -3,6 +3,7 @@ package org.improuv.coderetreat.antcolony;
 public class World {
 
 	private boolean hasBreadCrumbPile;
+	private Ant ant;
 
 	public boolean hasBreadcrumbPiles() {
 		return hasBreadCrumbPile;
@@ -25,4 +26,11 @@ public class World {
 		return new World();
 	}
 
+	public void addOneAnt(Ant ant) {
+		this.ant = ant;
+	}
+
+	public void turn() {
+		ant.move();
+	}
 }
