@@ -1,5 +1,6 @@
 package org.improuv.coderetreat.antcolony;
 
+import static org.mockito.Mockito.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
@@ -194,6 +195,22 @@ public class SomeTest {
 		
 		ant.move();
 		verify(tripAdvisor).proceed(initialLocation, colonyLocation);
+	}
+	
+	
+	@Test
+	public void antGivesAwayBreadcrumb_whenItReachesTheColony() throws Exception {
+		Location colonyLocation = randomLocation();
+		
+		TripAdvisor tripAdvisor = mock(TripAdvisor.class, RETURNS_MOCKS);
+		when(tripAdvisor.proceed(any(Location.class), any(Location.class))).thenReturn(colonyLocation);
+		
+		Ant ant = new Ant(tripAdvisor);
+		ant.setColony(colonyLocation);
+		ant.setHasBreadCrumb();
+		
+		ant.move();
+		assertFalse(ant.hasBreadcrumb());
 	}
 
 	private Location randomLocation() {

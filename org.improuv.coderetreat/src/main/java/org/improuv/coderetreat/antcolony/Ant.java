@@ -6,7 +6,7 @@ public class Ant {
 	// TODO why did they evolve?
 	
 	private TripAdvisor tripAdvisor = new TripAdvisor();
-	private Location colony = Location.randomLocation();
+	private Location colonyLocation = Location.randomLocation();
 	private Location pileLocation;
 	private Location location = Location.randomLocation();
 	private boolean hasBreadcrumb;
@@ -37,7 +37,7 @@ public class Ant {
 	
 	public void move() {
 		if(hasBreadcrumb) {
-			location = tripAdvisor.proceed(location, colony);
+			location = tripAdvisor.proceed(location, colonyLocation);
 		} else if(pileLocation != null) {
 			location = tripAdvisor.proceed(location, pileLocation);
 		} else {
@@ -46,7 +46,13 @@ public class Ant {
 		
 		if(isOnAPile()) {
 			hasBreadcrumb = true;
+		} else if(isInColony()) {
+			hasBreadcrumb = false;
 		}
+	}
+
+	private boolean isInColony() {
+		return location.equals(colonyLocation);
 	}
 
 	private boolean isOnAPile() {
@@ -77,7 +83,7 @@ public class Ant {
 	}
 
 	public void setColony(Location colony) {
-		this.colony = colony;
+		this.colonyLocation = colony;
 	}
 
 	public void setHasBreadCrumb() {
