@@ -1,22 +1,18 @@
 package org.improuv.coderetreat.antcolony;
 
-import static org.mockito.Mockito.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.RETURNS_MOCKS;
-import static org.mockito.Mockito.RETURNS_SMART_NULLS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Random;
 
-import org.improuv.coderetreat.antcolony.World;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Answers;
-import org.mockito.stubbing.Answer;
 
 public class SomeTest {
 
@@ -35,6 +31,8 @@ public class SomeTest {
 		World world = World.init();
 		assertTrue(world.hasBreadcrumbPiles());
 	}
+	
+	/* How one ant behaves */
 	
 	@Test
 	public void whenTheWorldTurns_anAntMoves() throws Exception {
@@ -96,6 +94,7 @@ public class SomeTest {
 	@Test
 	public void onATwoDimensionalGrid_oneLocation_hasEightAdjacentLocations() throws Exception {
 		Location center = new Location(1,1);
+		
 		assertTrue(center.isAdjacentTo(new Location(0,0)));
 		assertTrue(center.isAdjacentTo(new Location(0,1)));
 		assertTrue(center.isAdjacentTo(new Location(0,2)));
@@ -197,7 +196,6 @@ public class SomeTest {
 		verify(tripAdvisor).proceed(initialLocation, colonyLocation);
 	}
 	
-	
 	@Test
 	public void antGivesAwayBreadcrumb_whenItReachesTheColony() throws Exception {
 		Location colonyLocation = randomLocation();
@@ -213,6 +211,41 @@ public class SomeTest {
 		assertFalse(ant.hasBreadcrumb());
 	}
 
+	/* How ants interact */
+	
+	@Test
+	public void whenAtANewLocation_antsCheckIfTheyCanInteractWithAnotherAnt() throws Exception {
+		// here we might run into timing issues .. do the ants move at the same time?
+		// should an ant which already moved ask an ant which has not yet moved / or vice versa? 
+		
+		// How do ants meet anyways? Do we need the concept of a "World"?
+		// What does "interact" mean. Shouting? Staying on the same field?
+	}
+	
+	@Test
+	public void whenAntsTalk_theyChooseTheClosestPileAsTheirDestination() throws Exception {
+		
+	}
+	
+	// TODO: some tests which check that our perception of "this pile is closer than this" is correct
+	
+	@Test
+	public void pilesHaveCapacity() throws Exception {
+		
+	}
+	
+	@Test
+	public void antsForgetDepletedPiles() throws Exception {
+		
+	}
+	
+	@Test
+	public void antsCanBeLucky_andHitAPile_evenWhenTheyDidNotKnowItsThere() throws Exception {
+		//TODO this behaviour is essential for startup of the simulation!!
+	}
+	
+	/* Helper */
+	
 	private Location randomLocation() {
 		return Location.randomLocation(rand);
 	}
