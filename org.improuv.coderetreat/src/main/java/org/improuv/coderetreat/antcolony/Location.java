@@ -10,6 +10,12 @@ public class Location {
 	private final int x;
 	private final int y;
 	
+	//don't use for tests. FIXME: this stupid method shouldn't be there. The only callers are default initializators in Ant - and these shouldn't be there also!
+	public static Location randomLocation() {
+		return new Location(new Random().nextInt(), new Random().nextInt());
+	}
+	
+	//use for tests.
 	public static Location randomLocation(Random rand) {
 		return new Location(rand.nextInt(), rand.nextInt());
 	}
@@ -33,7 +39,7 @@ public class Location {
 		return false;
 	}
 	
-	//TODO: this is basically some movement-strategy and doesn't belong here. I put it here because I didn't want to expose the x+y of the Location.
+	//FIXME: this is basically some movement-strategy and doesn't belong here. I put it here because I didn't want to expose the x+y of the Location.
 	public Location towards(Location other) {
 		if(x < other.x) {
 			return new Location(x+1, y);
@@ -57,7 +63,7 @@ public class Location {
 		return result;
 	}
 
-	@Override
+	@Override //FIXME make lombok work with unit tests on eclipse and use it instead!
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -73,6 +79,7 @@ public class Location {
 		return true;
 	}
 
+	//FIXME this is a debug helper (I forgot a test for Location.equals) .. shouldn't be in production code
 	public String toString() {
 		return x+","+y;
 	}

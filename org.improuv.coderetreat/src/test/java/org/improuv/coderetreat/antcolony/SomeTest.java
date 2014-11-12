@@ -3,6 +3,8 @@ package org.improuv.coderetreat.antcolony;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.RETURNS_MOCKS;
+import static org.mockito.Mockito.RETURNS_SMART_NULLS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,6 +14,8 @@ import java.util.Random;
 import org.improuv.coderetreat.antcolony.World;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Answers;
+import org.mockito.stubbing.Answer;
 
 public class SomeTest {
 
@@ -54,7 +58,7 @@ public class SomeTest {
 	
 	@Test
 	public void aAntWithoutGoal_randomWalks() throws Exception {
-		TripAdvisor tripAdvisor = mock(TripAdvisor.class);
+		TripAdvisor tripAdvisor = mock(TripAdvisor.class, RETURNS_MOCKS); //RETURN_MOCKS, because otherwise TripAdvisor returns null on randomWalk(), causing a NullPointerException in the ant.move() method when we check if the ant is on a pile
 		Ant ant = new Ant(tripAdvisor);
 		ant.move();
 		verify(tripAdvisor).randomWalk();
@@ -62,7 +66,7 @@ public class SomeTest {
 	
 	@Test
 	public void anAntWhoKnowsAPile_goesThere() throws Exception {
-		TripAdvisor tripAdvisor = mock(TripAdvisor.class);
+		TripAdvisor tripAdvisor = mock(TripAdvisor.class, RETURNS_MOCKS);
 		Ant ant = new Ant(tripAdvisor);
 		
 		Location initialAntLocation = ant.getLocation();
@@ -102,7 +106,7 @@ public class SomeTest {
 	@Test
 	public void anAnt_withADistantPile_isAtSomeIntermediateLocation_afterMoving() throws Exception {
 		Location initialAntLocation = randomLocation();
-		Location pileLocation = Location.farAwayFrom(randomLocation());
+		Location pileLocation = Location.farAwayFrom(initialAntLocation);
 		
 		Ant ant = new Ant(initialAntLocation);
 		BreadcrumbPile pile = new BreadcrumbPile(pileLocation);
@@ -117,10 +121,10 @@ public class SomeTest {
 	@Test
 	public void tripAdvisorGoesHorizontalFirst() throws Exception {
 		Location start = new Location(0,0);
-		Location end = new Location(3,3);
+		Location destination = new Location(3,3);
 		
 		TripAdvisor maps = new TripAdvisor();
-		Location intermediate = maps.proceed(start, end);
+		Location intermediate = maps.proceed(start, destination);
 		
 		assertThat(intermediate, is(new Location(1,0)));
 	}
@@ -128,10 +132,10 @@ public class SomeTest {
 	@Test
 	public void tripAdvisorGoesVerticalWhenXValuesAreEqual() throws Exception {
 		Location start = new Location(0,0);
-		Location end = new Location(0,3);
+		Location destination = new Location(0,3);
 		
 		TripAdvisor maps = new TripAdvisor();
-		Location intermediate = maps.proceed(start, end);
+		Location intermediate = maps.proceed(start, destination);
 		
 		assertThat(intermediate, is(new Location(0,1)));
 	}
@@ -139,12 +143,48 @@ public class SomeTest {
 	@Test
 	public void tripAdvisorStaysAtLocationWhenReached() throws Exception {
 		Location start = new Location(0,0);
-		Location end = new Location(0,0);
+		Location destination = new Location(0,0);
 		
 		TripAdvisor maps = new TripAdvisor();
-		Location intermediate = maps.proceed(start, end);
+		Location intermediate = maps.proceed(start, destination);
 		
-		assertThat(intermediate, is(new Location(0,0)));
+		assertThat(intermediate, is(destination));
+	}
+	
+	@Test
+	public void tripAdvisorTakesDiagonalShortcutWhenNextToDestination() throws Exception {
+		Location start = new Location(0,0);
+		Location destination = new Location(1,1);
+		
+		TripAdvisor maps = new TripAdvisor();
+		Location intermediate = maps.proceed(start, destination);
+		
+		assertThat(intermediate, is(destination));
+	}
+	
+	@Test
+	public void antHasNoBreadcrumbInitially() throws Exception {
+		assertFalse(new Ant().hasBreadcrumb());
+	}
+
+	@Test
+	public void antTakesBreadcrumb_whenPileReached() throws Exception {
+		Ant ant = Ant.withCloseByPile(randomLocation());
+		ant.move();
+		
+		assertTrue(ant.hasBreadcrumb());
+	}
+
+	@Test
+	public void antWithBreadcrumb_goesHome() throws Exception {
+		TripAdvisor tripAdvisor = mock(TripAdvisor.class, RETURNS_MOCKS);
+		Ant ant = new Ant(tripAdvisor);
+
+		Location colonyLocation = Location.closeTo(ant.getLocation());
+		ant.setColony(colonyLocation);
+		
+		ant.move();
+		verify(tripAdvisor).proceed(ant.getLocation(), colonyLocation);
 	}
 
 	private Location randomLocation() {
