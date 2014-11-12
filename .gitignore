@@ -4,3 +4,8 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
+/org.improuv.coderetreat/.classpath
+/org.improuv.coderetreat/.project
+/org.improuv.coderetreat/.settings/org.eclipse.core.resources.prefs
+/org.improuv.coderetreat/.settings/org.eclipse.jdt.core.prefs
+/org.improuv.coderetreat/.settings/org.eclipse.m2e.core.prefs
