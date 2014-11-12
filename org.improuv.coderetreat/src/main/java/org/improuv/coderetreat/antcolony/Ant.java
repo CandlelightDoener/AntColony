@@ -36,10 +36,13 @@ public class Ant {
 	}
 	
 	public void move() {
-		if(pileLocation != null)
+		if(hasBreadcrumb) {
+			location = tripAdvisor.proceed(location, colony);
+		} else if(pileLocation != null) {
 			location = tripAdvisor.proceed(location, pileLocation);
-		else
+		} else {
 			location = tripAdvisor.randomWalk();
+		}
 		
 		if(isOnAPile()) {
 			hasBreadcrumb = true;
@@ -48,7 +51,9 @@ public class Ant {
 
 	private boolean isOnAPile() {
 		
-		//FIXME Attention, this is a defect: an ant might just walk onto a pile by accident, even without previous knowledge of that pile. We would need to ask a global map if there is a pile!
+		// FIXME Attention, this is a defect: an ant might just walk onto a pile
+		// by accident, even without previous knowledge of that pile. We would
+		// need to ask a global map if there is a pile!
 		if(pileLocation == null)
 			return false;
 		
@@ -73,6 +78,10 @@ public class Ant {
 
 	public void setColony(Location colony) {
 		this.colony = colony;
+	}
+
+	public void setHasBreadCrumb() {
+		hasBreadcrumb = true;
 	}
 
 }

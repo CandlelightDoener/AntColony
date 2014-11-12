@@ -58,7 +58,11 @@ public class SomeTest {
 	
 	@Test
 	public void aAntWithoutGoal_randomWalks() throws Exception {
-		TripAdvisor tripAdvisor = mock(TripAdvisor.class, RETURNS_MOCKS); //RETURN_MOCKS, because otherwise TripAdvisor returns null on randomWalk(), causing a NullPointerException in the ant.move() method when we check if the ant is on a pile
+		// RETURN_MOCKS, because otherwise TripAdvisor returns null on randomWalk(),
+		// causing a NullPointerException in the ant.move() method when we check
+		// if the ant is on a pile. FIXME this smells..there should be a simpler
+		// workflow where I can avoid smart mocks
+		TripAdvisor tripAdvisor = mock(TripAdvisor.class, RETURNS_MOCKS);
 		Ant ant = new Ant(tripAdvisor);
 		ant.move();
 		verify(tripAdvisor).randomWalk();
@@ -180,11 +184,16 @@ public class SomeTest {
 		TripAdvisor tripAdvisor = mock(TripAdvisor.class, RETURNS_MOCKS);
 		Ant ant = new Ant(tripAdvisor);
 
+		//FIXME: oh my gosh, a test-ant gets more and more difficult to set up. How should I tell the ant that it has a breadcrumb? Don't want to introduce a setter.
+		ant.setHasBreadCrumb(); //fuck it ;-)
+		
+		Location initialLocation = ant.getLocation();
+		
 		Location colonyLocation = Location.closeTo(ant.getLocation());
 		ant.setColony(colonyLocation);
 		
 		ant.move();
-		verify(tripAdvisor).proceed(ant.getLocation(), colonyLocation);
+		verify(tripAdvisor).proceed(initialLocation, colonyLocation);
 	}
 
 	private Location randomLocation() {
